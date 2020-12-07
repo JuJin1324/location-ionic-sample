@@ -1,5 +1,7 @@
 {
   "name": "location-ionic-sample",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

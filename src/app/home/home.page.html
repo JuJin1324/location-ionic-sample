@@ -9,12 +9,35 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Location Sample</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        <ion-text color="primary">
+          <h3>GPS</h3>
+        </ion-text>
+        <p>Latitude(위도): 127.000000</p>
+        <ion-text color="secondary">
+          <p>Longitude(경도): 34.000000</p>
+        </ion-text>
+        <ion-text color="secondary">
+          <p>Speed(속도): <label>
+            <input type="text" name="speed" [(ngModel)]="data.speed" />
+          </label> km/h</p>
+          {{data.speed}}
+        </ion-text>
+        <ion-text color="secondary">
+          <p>Azimuth(방위각): 360 도</p>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+    <br/>
+
+    <ion-button color="primary">전송</ion-button>
+    <ion-button color="primary">중지</ion-button><br/>
+    <ion-button color="medium">Medium</ion-button>
   </div>
 </ion-content>

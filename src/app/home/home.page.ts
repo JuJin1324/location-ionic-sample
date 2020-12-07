@@ -6,7 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  data = {
+    speed: 123
+  };
 
   constructor() {}
-
 }
