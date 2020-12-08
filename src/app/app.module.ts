@@ -10,6 +10,8 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 
 import {FormsModule} from '@angular/forms';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @NgModule({
     declarations: [AppComponent],
@@ -18,6 +20,8 @@ import {FormsModule} from '@angular/forms';
     providers: [
         StatusBar,
         SplashScreen,
+        Geolocation,
+        AndroidPermissions,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]
