@@ -10,18 +10,21 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 
 import {FormsModule} from '@angular/forms';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
+import {BackgroundGeolocation} from '@ionic-native/background-geolocation/ngx';
+import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
-    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule],
+    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, HttpClientModule],
     providers: [
         StatusBar,
         SplashScreen,
-        Geolocation,
         AndroidPermissions,
+        Geolocation,
+        BackgroundGeolocation,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]

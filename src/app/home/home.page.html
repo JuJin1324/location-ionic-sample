@@ -42,14 +42,22 @@
         </ion-label>
         <ion-badge color="danger" slot="end">{{data.azimuth}}</ion-badge>
       </ion-item>
+      <ion-item>
+        <ion-label>
+          전송 URL
+        </ion-label>
+        <ion-badge color="danger" slot="end">{{config.url}}</ion-badge>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          전송 주기(초)
+        </ion-label>
+        <ion-badge color="danger" slot="end">{{config.sendIntervalSec}}</ion-badge>
+      </ion-item>
     </ion-list>
     <br/>
-    <ion-button (click)="getCurrentCoordinates()" expand="block">
-      Get Location
-    </ion-button>
-    <br/>
-    <ion-button color="primary">전송</ion-button>
-    <ion-button color="primary">중지</ion-button><br/>
-    <ion-button color="medium">Medium</ion-button>
+    <ion-button color="primary" [disabled]="disableStartBtn" (click)="startBackgroundGeolocation()">전송</ion-button>
+    &nbsp;&nbsp;
+    <ion-button color="primary" [disabled]="disableStopBtn" (click)="stopBackgroundGeolocation()">중지</ion-button><br/>
   </div>
 </ion-content>

@@ -138,60 +138,98 @@
 > ...
 > export class HomePage {
 >   ...
+>   watch = null;
+> 
 >   constructor(private androidPermissions: AndroidPermissions,
 >       private geolocation: Geolocation) {
 >       ...
 >   }
->   options = {
+>   const options = {
 >       timeout: 10000,
 >       enableHighAccuracy: true,
+>       frequency: 500,
 >       maximumAge: 3600
 >   };
->
->   getCurrentCoordinates() {
->       this.geolocation.getCurrentPosition(this.options).then(resp => {
->           this.data.latitude = resp.coords.latitude;
->           this.data.longitude = resp.coords.longitude;
->           this.data.speed = resp.coords.speed * 3.6 || 0;
->       }).catch(error => {
->           console.log('Error getting location', error);
+>   this.watch = this.geolocation.watchPosition(options)
+>       .subscribe((position: Geoposition) => {
+>           console.log('foreground position:', position);
+>           this.data.latitude = position.coords.latitude;
+>           this.data.longitude = position.coords.longitude;
+>           this.data.speed = position.coords.speed * 3.6 || 0;
+>           this.data.timestamp = position.timestamp;
 >       });
->   }
 > ...
 > ```
 
-### home.page.html
-> ```html
-> <div id="container">
->    <ion-list>
->      <ion-list-header>
->        <ion-label>Location Coordinates</ion-label>
->      </ion-list-header>
->      <ion-item>
->        <ion-label>
->          Latitude
->        </ion-label>
->        <ion-badge color="danger" slot="end">{{data.latitude}}</ion-badge>
->      </ion-item>
->      <ion-item>
->        <ion-label>
->          Longitude
->        </ion-label>
->        <ion-badge color="danger" slot="end">{{data.longitude}}</ion-badge>
->      </ion-item>
->      <ion-item>
->        <ion-label>
->          Speed
->        </ion-label>
->        <ion-badge color="danger" slot="end">{{data.speed}}</ion-badge>
->      </ion-item>
->    </ion-list>
->    <br/>
->    <ion-button (click)="getCurrentCoordinates()" expand="block">
->      Get Location
->    </ion-button>
+## HTTP Client
+### 플러그인 및 npm 설치
+> angular 모듈 사용으로 인해 추가 설치 필요 없음.
+
+### app.module.ts
+> ```typescript
+> import {HttpClientModule} from '@angular/common/http';
+> @NgModule({
+>    declarations: [AppComponent],
+>    entryComponents: [],
+>    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, HttpClientModule],
+>    providers: [
+>        StatusBar,
+>        SplashScreen,
+>        Geolocation,
+>        ...
+>    ],
 >    ...
-> </div>
+> })
+...
+> ```
+
+### home.page.ts
+> ```typescript
+> import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
+> import {throwError} from 'rxjs';
+> import {catchError, retry} from 'rxjs/operators';
+> ...
+> export class HomePage {
+>   ...
+>   watch = null;
+> 
+>   constructor(...,
+>       private http: HttpClient) {
+>       ...
+>   }
+>   ...
+>   // Handle API errors
+>   handleError(error: HttpErrorResponse) {
+>       if (error.error instanceof ErrorEvent) {
+>           // A client-side or network error occurred. Handle it accordingly.
+>           console.error('An error occurred:', error.error.message);
+>       } else {
+>           // The backend returned an unsuccessful response code.
+>           // The response body may contain clues as to what went wrong,
+>           console.error(
+>               `Backend returned code ${error.status}, ` +
+>               `body was: ${error.error}`);
+>       }
+>       // return an observable with a user-facing error message
+>       return throwError(
+>           'Something bad happened; please try again later.');
+>   }
+>
+>   sendGPS(reqBody) {
+>       const httpOptions = {
+>           headers: new HttpHeaders({
+>               'Content-Type': 'application/json'
+>           })
+>       };
+>       this.http.post(
+>           this.config.url, reqBody, httpOptions
+>       ).pipe(
+>           retry(2),
+>           catchError(this.handleError)
+>       ).subscribe(resBody => {
+>           console.log(resBody);
+>       });
+>   }
 > ```
 
 ### 참조사이트
