@@ -19,7 +19,7 @@ import {catchError, retry} from 'rxjs/operators';
 export class HomePage {
     config = {
         /* URL 서버의 CORS 설정이 되어 있어야 정상 작동함. */
-        url: 'http://192.168.0.98:3000/gps/send',
+        url: 'http://192.168.0.98:8087/gps/send',
         sendIntervalSec: 10
     };
     data = {
@@ -27,7 +27,7 @@ export class HomePage {
         longitude: 0.0000000,
         speed: 123,     /* km/h */
         azimuth: 360,   /* degree (range: 0 ~ 360) */
-        timestamp: null,
+        timestamp: null
     };
     watch = null;
     interval = null;
@@ -127,19 +127,45 @@ export class HomePage {
             'Something bad happened; please try again later.');
     }
 
-    sendGPS(reqBody) {
+    sendGPS(data) {
         const httpOptions = {
             headers: new HttpHeaders({
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Receipt-company': 'Centum Factorial',
+                'Phone-number': '010-4171-9008',
+                'Occurred-date': this.getDateString(data.timestamp),
+                'Report-period': '60'
             })
         };
-        this.http.post(
-            this.config.url, reqBody, httpOptions
-        ).pipe(
-            retry(2),
-            catchError(this.handleError)
-        ).subscribe(resBody => {
-            console.log(resBody);
-        });
+        const reqBody = {
+            latitude: data.latitude,
+            longitude: data.longitude,
+            temperature1: '-5555',
+            temperature2: '-5555',
+            temperature3: '-5555',
+            speed: data.speed,       /* km/h */
+            azimuth: data.azimuth,   /* degree (range: 0 ~ 360) */
+        };
+        this.http.post(this.config.url, reqBody, httpOptions)
+            .pipe(
+                retry(2),
+                catchError(this.handleError)
+            )
+            .subscribe(resBody => {
+                console.log(resBody);
+            });
+    }
+
+    getDateString(timestamp) {
+        const date = new Date(timestamp);
+        const year = date.getUTCFullYear();
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const hour = String(date.getUTCHours()).padStart(2, '0');
+        const minute = String(date.getUTCMinutes()).padStart(2, '0');
+        const second = String(date.getUTCSeconds()).padStart(2, '0');
+        const millisecond = String(date.getUTCMilliseconds()).padStart(3, '0');
+
+        return `${year}-${month}-${day} ${hour}:${minute}:${second}.${millisecond}`;
     }
 }

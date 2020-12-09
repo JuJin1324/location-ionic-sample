@@ -14,6 +14,8 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {BackgroundGeolocation} from '@ionic-native/background-geolocation/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {HttpClientModule} from '@angular/common/http';
+import {AuthService} from './auth/service/auth.service';
+
 
 @NgModule({
     declarations: [AppComponent],
@@ -24,6 +26,7 @@ import {HttpClientModule} from '@angular/common/http';
         SplashScreen,
         AndroidPermissions,
         Geolocation,
+        AuthService,
         BackgroundGeolocation,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
