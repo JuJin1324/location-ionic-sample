@@ -38,14 +38,14 @@
 > 프로젝트 담을 디렉터리로 이동 후 다음 명령어 실행: `ionic start [프로젝트 이름] [프로젝트 타입]`  
 > UI 가 기본(empty)인 프로젝트 생성: `ionic start location-ionic-sample blank`  
 
+## 프로젝트 시작
 ### 웹 프로젝트를 안드로이드 프로젝트로 변경
-> android 프로젝트로 변경 [프로젝트를 새로 생성하지 않은 경우 넘어가기]
+> android 프로젝트로 변경
 > 기존 ionic 웹 프로젝트를 android 프로젝트로 변경
 > ```shell
 > ionic cordova prepare android
 > ```
 
-## 프로젝트 시작
 ### npm 
 > `npm install` 을 통해서 npm module 가져오기
 
