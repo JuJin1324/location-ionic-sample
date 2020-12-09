@@ -16,6 +16,7 @@ export class LoginPage implements OnInit {
     ngOnInit() {
     }
 
+    /* 참조사이트: https://www.techiediaries.com/ionic-ui-forms-theming/ */
     login(form) {
         this.authService.login(form).subscribe((resBody: AuthResponseBody) => {
             this.token = resBody.token;
